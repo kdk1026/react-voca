@@ -1,0 +1,5 @@
+<설치>
+npm install -g json-server
+
+<실행>
+json-server --watch ./src/db/data.json --port 3001
