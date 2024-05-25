@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import Word from "./Word";
 import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Day() {
     const { day } = useParams();
@@ -26,29 +27,23 @@ function Day() {
 
         if ( window.confirm(msg) ) {
             if ( words.length === 0 ) {
-                fetch(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`, {
-                    method: 'DELETE'
-                })
+                axios.delete(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`)
                 .then(res => {
-                    if (res.ok) {
+                    if ( res.status === 200 ) {
                         history(`/`);
                     }
-                });
+                })
             } else {
-                words.forEach((word) => {
-                    fetch(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
-                        method: 'DELETE'
-                    })
+                words.forEach(async (word) => {
+                    await axios.delete(`${process.env.REACT_APP_API_URL}/words/${word.id}`)
                     .then(res => {
-                        if (res.ok) {
-                            fetch(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`, {
-                                method: 'DELETE'
-                            })
+                        if ( res.status === 200 ) {
+                            axios.delete(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`)
                             .then(res => {
-                                if (res.ok) {
+                                if ( res.status === 200 ) {
                                     history(`/`);
                                 }
-                            });
+                            })
                         }
                     })
                 });

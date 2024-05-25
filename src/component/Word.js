@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 function Word({ word: w }) {
@@ -15,33 +16,25 @@ function Word({ word: w }) {
     }
 
     function toggleDone() {
-        fetch(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type' : 'application/json',
-            },
-            body: JSON.stringify({
-                ...word,
-                isDone: !isDone,
-            }),
+        axios.put(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
+            ...word,
+            isDone: !isDone,
         })
         .then(res => {
-            if (res.ok) {
+            if (res.status === 200) {
                 setIsDone(!isDone);
             }
-        });
+        })
     }
 
     function del() {
         if ( window.confirm('삭제 하시겠습니까?') ) {
-            fetch(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
-                method: 'DELETE'
-            })
+            axios.delete(`${process.env.REACT_APP_API_URL}/words/${word.id}`)
             .then(res => {
-                if (res.ok) {
+                if (res.status === 200) {
                     setWord({ id: 0 });
                 }
-            });
+            })
         }
     }
 
