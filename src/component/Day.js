@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 function Day() {
     const { day } = useParams();
 
-    const words = useFetch(`http://localhost:3001/words?day=${day}`);
+    const words = useFetch(`${process.env.REACT_APP_API_URL}/words?day=${day}`);
 
-    const days = useFetch("http://localhost:3001/days");
+    const days = useFetch(`${process.env.REACT_APP_API_URL}/days`);
     const history = useNavigate();
 
-    const currentDay = useFetch(`http://localhost:3001/days?day=${day}`);
+    const currentDay = useFetch(`${process.env.REACT_APP_API_URL}/days?day=${day}`);
 
     function prev() {
         history(`/day/${Number(day) - 1}`);
@@ -25,23 +25,34 @@ function Day() {
         const msg = '단어들도 모두 삭제됩니다.\n삭제 하시겠습니까?';
 
         if ( window.confirm(msg) ) {
-            words.forEach((word) => {
-                fetch(`http://localhost:3001/words/${word.id}`, {
+            if ( words.length === 0 ) {
+                fetch(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`, {
                     method: 'DELETE'
                 })
                 .then(res => {
                     if (res.ok) {
-                        fetch(`http://localhost:3001/days/${currentDay[0].id}`, {
-                            method: 'DELETE'
-                        })
-                        .then(res => {
-                            if (res.ok) {
-                                history(`/`);
-                            }
-                        });
+                        history(`/`);
                     }
-                })
-            });
+                });
+            } else {
+                words.forEach((word) => {
+                    fetch(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(res => {
+                        if (res.ok) {
+                            fetch(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`, {
+                                method: 'DELETE'
+                            })
+                            .then(res => {
+                                if (res.ok) {
+                                    history(`/`);
+                                }
+                            });
+                        }
+                    })
+                });
+            }
         }
     }
     

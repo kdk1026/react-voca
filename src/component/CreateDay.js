@@ -2,11 +2,11 @@ import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 
 function CreateDay() {
-    const days = useFetch("http://localhost:3001/days");
+    const days = useFetch(`${process.env.REACT_APP_API_URL}/days`);
     const history = useNavigate();
 
     function addDay() {
-        fetch(`http://localhost:3001/days`, {
+        fetch(`${process.env.REACT_APP_API_URL}/days`, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json',

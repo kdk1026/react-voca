@@ -15,7 +15,7 @@ function Word({ word: w }) {
     }
 
     function toggleDone() {
-        fetch(`http://localhost:3001/words/${word.id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type' : 'application/json',
@@ -34,7 +34,7 @@ function Word({ word: w }) {
 
     function del() {
         if ( window.confirm('삭제 하시겠습니까?') ) {
-            fetch(`http://localhost:3001/words/${word.id}`, {
+            fetch(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
                 method: 'DELETE'
             })
             .then(res => {

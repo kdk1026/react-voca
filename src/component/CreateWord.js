@@ -3,7 +3,7 @@ import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 
 function CreateWord() {
-    const days = useFetch("http://localhost:3001/days");
+    const days = useFetch(`${process.env.REACT_APP_API_URL}/days`);
     const history = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     
@@ -13,7 +13,7 @@ function CreateWord() {
         if ( !isLoading ) {
             setIsLoading(true);
 
-            fetch(`http://localhost:3001/words`, {
+            fetch(`${process.env.REACT_APP_API_URL}/words`, {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json',
