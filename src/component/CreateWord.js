@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { createWord } from "../apis/words";
 
 function CreateWord() {
     const days = useFetch(`${process.env.REACT_APP_API_URL}/days`);
@@ -14,12 +14,7 @@ function CreateWord() {
         if ( !isLoading ) {
             setIsLoading(true);
 
-            axios.post(`${process.env.REACT_APP_API_URL}/words`, {
-                day: dayRef.current.value,
-                eng: engRef.current.value,
-                kor: korRef.current.value,
-                isDone: false
-            })
+            createWord(dayRef.current.value, engRef.current.value, korRef.current.value)
             .then(res => {
                 if (res.status === 201) {
                     alert("생성이 완료 되었습니다");

@@ -2,7 +2,8 @@ import { useParams } from "react-router-dom";
 import Word from "./Word";
 import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { deleteDay } from "../apis/days";
+import { deleteWord } from "../apis/words";
 
 function Day() {
     const { day } = useParams();
@@ -27,7 +28,7 @@ function Day() {
 
         if ( window.confirm(msg) ) {
             if ( words.length === 0 ) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`)
+                deleteDay(currentDay[0].id)
                 .then(res => {
                     if ( res.status === 200 ) {
                         history(`/`);
@@ -35,10 +36,10 @@ function Day() {
                 })
             } else {
                 words.forEach(async (word) => {
-                    await axios.delete(`${process.env.REACT_APP_API_URL}/words/${word.id}`)
+                    await deleteWord(word.id)
                     .then(res => {
                         if ( res.status === 200 ) {
-                            axios.delete(`${process.env.REACT_APP_API_URL}/days/${currentDay[0].id}`)
+                            deleteDay(currentDay[0].id)
                             .then(res => {
                                 if ( res.status === 200 ) {
                                     history(`/`);
