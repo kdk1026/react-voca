@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import { deleteWord, updateWord } from "../apis/words";
 
 function Word({ word: w }) {
     /*
@@ -16,10 +16,7 @@ function Word({ word: w }) {
     }
 
     function toggleDone() {
-        axios.put(`${process.env.REACT_APP_API_URL}/words/${word.id}`, {
-            ...word,
-            isDone: !isDone,
-        })
+        updateWord(word.id, {...word}, !isDone)
         .then(res => {
             if (res.status === 200) {
                 setIsDone(!isDone);
@@ -29,7 +26,7 @@ function Word({ word: w }) {
 
     function del() {
         if ( window.confirm('삭제 하시겠습니까?') ) {
-            axios.delete(`${process.env.REACT_APP_API_URL}/words/${word.id}`)
+            deleteWord(word.id)
             .then(res => {
                 if (res.status === 200) {
                     setWord({ id: 0 });

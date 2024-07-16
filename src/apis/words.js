@@ -12,3 +12,10 @@ export const createWord = (day, eng, kor) => {
 export const deleteWord = (id) => {
     return axios.delete(`${process.env.REACT_APP_API_URL}/words/${id}`);
 }
+
+export const updateWord = (id, word, isDone) => {
+    return axios.put(`${process.env.REACT_APP_API_URL}/words/${id}`, {
+        ...word,
+        isDone: isDone,
+    });
+}
